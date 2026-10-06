@@ -1,0 +1,2447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillSwap Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+<body class="dashboard-body">
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="dashboard-logo">
+        <span>✦</span>
+        Skill<span>Swap</span>
+    </div>
+
+    <div class="sidebar-menu">
+
+        <button
+    class="side-item active"
+   onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+>
+    🏠
+    <span>Dashboard</span>
+</button>
+
+
+<button
+    class="side-item"
+    onclick="showDashboardSection('matchesSection')"
+>
+    🎯
+    <span>My Matches</span>
+</button>
+
+
+<button
+    class="side-item"
+    onclick="showDashboardSection('requestsSection')"
+>
+    💬
+    <span>Requests</span>
+
+    <b class="notification-number" id="notificationCount">0</b>
+</button>
+
+
+<button
+    class="side-item"
+    onclick="showDashboardSection('skillsSection')"
+>
+    📚
+    <span>My Skills</span>
+</button>
+
+
+<button
+    class="side-item"
+    onclick="showDashboardSection('connectionsSection')"
+>
+    🤝
+    <span>Connections</span>
+</button>
+    </div>
+
+    <div class="sidebar-bottom">
+
+        <button class="side-item">
+            ⚙️
+            <a href="#" onclick="openProfileModal()">
+    👤 My Profile
+</a>
+            <span>Settings</span>
+        </button>
+
+        <button class="side-item logout" onclick="logoutUser()">
+            🚪
+            <span>Logout</span>
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<main class="dashboard-main">
+    <div id="dashboardSection"></div>
+
+    <!-- TOP BAR -->
+
+    <header class="dashboard-header">
+
+        <div>
+
+            <p class="small-heading">
+                STUDENT DASHBOARD
+            </p>
+
+            <h1 id="welcomeMessage">
+    Good afternoon 👋
+</h1>
+
+        </div>
+
+        <div class="dashboard-actions">
+
+<button class="icon-button" onclick="showNotifications()">
+
+</button>                🔔
+                <span class="notification-dot"></span>
+            </button>
+
+            <div class="user-profile">
+
+               <div class="profile-avatar" id="profileAvatar">
+    P
+</div>
+
+                <div>
+
+                   <strong id="dashboardUserName">
+    Student
+</strong>
+
+                    <small>
+                        B.Tech AI & DS
+                    </small>
+
+                </div>
+
+                <span>⌄</span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <section class="dashboard-search">
+
+        <div class="search-title">
+
+            <h2>
+                Find your next skill partner
+            </h2>
+
+            <p>
+                Search for students who can teach what you want to learn.
+            </p>
+
+        </div>
+
+        <div class="dashboard-search-box">
+
+            <span>⌕</span>
+
+            <input
+                type="text"
+                id="dashboardSearch"
+                placeholder="Search Java, Python, UI Design, Excel..."
+                onkeyup="dashboardSearch()"
+            >
+
+            <button onclick="dashboardSearch()">
+                Search
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <section class="dashboard-stats">
+
+        <div class="stat-card">
+
+            <div class="stat-icon purple-bg">
+                🎯
+            </div>
+
+            <div>
+
+                <small>
+                    Skill Matches
+                </small>
+
+                <strong id="skillMatchCount">
+    0
+</strong>
+
+<span class="positive">
+    Smart matches
+</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon green-bg">
+                📚
+            </div>
+
+            <div>
+
+                <small>
+                    Skills Learning
+                </small>
+
+               <strong id="learningSkillCount">
+    0
+</strong>
+
+<span class="positive">
+    Learning now
+</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon orange-bg">
+                🧑‍🏫
+            </div>
+
+            <div>
+
+                <small>
+                    Skills Teaching
+                </small>
+
+               <strong id="teachingSkillCount">
+    0
+</strong>
+
+<span class="positive">
+    Teaching now
+</span>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue-bg">
+                🤝
+            </div>
+
+            <div>
+
+                <small>
+                    Connections
+                </small>
+
+               <strong id="connectionCount">
+    0
+</strong>
+
+<span class="positive">
+    Requests sent
+</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CONTENT GRID ================= -->
+
+    <section class="dashboard-content">
+
+
+        <!-- RECOMMENDED MATCHES -->
+
+        <div
+    class="dashboard-panel matches-panel"
+    id="matchesSection"
+>
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="panel-label">
+                        RECOMMENDED FOR YOU
+                    </span>
+
+                    <h2>
+                        Your Skill Matches
+                    </h2>
+
+                </div>
+
+                <button class="view-all">
+                    View all →
+                </button>
+
+            </div>
+
+
+            <!-- MATCH 1 -->
+
+            <div
+    class="match-card dashboard-match"
+    data-teach="Java,Python,SQL"
+data-want="UI Design,Communication"
+>
+                <div class="dashboard-person">
+
+                    <div class="large-avatar purple">
+                        A
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Arjun Kumar
+                        </h3>
+
+                        <p>
+                            Computer Science • 2nd Year
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="match-skills">
+
+                    <div>
+
+                        <small>
+                            CAN TEACH
+                        </small>
+
+                        <span>
+                            Java
+                        </span>
+
+                        <span>
+                            Python
+                        </span>
+
+                    </div>
+
+                    <div class="exchange-arrow">
+                        ⇄
+                    </div>
+
+                    <div>
+
+                        <small>
+                            WANTS TO LEARN
+                        </small>
+
+                        <span>
+                            UI Design
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="match-percentage">
+
+    <strong class="dynamic-match">
+        0%
+    </strong>
+
+    <small>
+        Match
+    </small>
+
+</div>
+
+                <button
+                    class="connect-button"
+                    onclick="connectDashboard('Arjun Kumar')"
+                >
+                    Connect
+                </button>
+
+            </div>
+
+
+            <!-- MATCH 2 -->
+
+            <div
+    class="match-card dashboard-match"
+    data-teach="UI Design,Figma,Canva"
+data-want="Python,Java"
+>
+                <div class="dashboard-person">
+
+                    <div class="large-avatar pink">
+                        P
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Priya Sharma
+                        </h3>
+
+                        <p>
+                            AI & DS • 2nd Year
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="match-skills">
+
+                    <div>
+
+                        <small>
+                            CAN TEACH
+                        </small>
+
+                        <span>
+                            UI Design
+                        </span>
+
+                        <span>
+                            Figma
+                        </span>
+
+                    </div>
+
+                    <div class="exchange-arrow">
+                        ⇄
+                    </div>
+
+                    <div>
+
+                        <small>
+                            WANTS TO LEARN
+                        </small>
+
+                        <span>
+                            Python
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="match-percentage">
+
+    <strong class="dynamic-match">
+        0%
+    </strong>
+
+    <small>
+        Match
+    </small>
+
+</div>
+
+
+                <button
+                    class="connect-button"
+                    onclick="connectDashboard('Priya Sharma')"
+                >
+                    Connect
+                </button>
+
+            </div>
+
+
+            <!-- MATCH 3 -->
+
+           <div
+    class="match-card dashboard-match"
+    data-teach="Excel,Marketing,Business"
+data-want="Java,Python"
+>
+                <div class="dashboard-person">
+
+                    <div class="large-avatar orange">
+                        R
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Rohan Reddy
+                        </h3>
+
+                        <p>
+                            MBA • 1st Year
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="match-skills">
+
+                    <div>
+
+                        <small>
+                            CAN TEACH
+                        </small>
+
+                        <span>
+                            Excel
+                        </span>
+
+                        <span>
+                            Marketing
+                        </span>
+
+                    </div>
+
+                    <div class="exchange-arrow">
+                        ⇄
+                    </div>
+
+                    <div>
+
+                        <small>
+                            WANTS TO LEARN
+                        </small>
+
+                        <span>
+                            Java
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+               <div class="match-percentage">
+
+    <strong class="dynamic-match">
+        0%
+    </strong>
+
+    <small>
+        Match
+    </small>
+
+</div>
+
+                <button
+                    class="connect-button"
+                    onclick="connectDashboard('Rohan Reddy')"
+                >
+                    Connect
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+
+        <div class="dashboard-right">
+
+
+            <!-- MY SKILLS -->
+
+            <div
+    class="dashboard-panel skills-panel"
+    id="skillsSection"
+>
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-label">
+                            MY PROFILE
+                        </span>
+
+                        <h2>
+                            My Skills
+                        </h2>
+
+                    </div>
+
+                    <button class="edit-button">
+                        Edit
+                    </button>
+
+                </div>
+
+
+                <div class="skill-section">
+
+    <small>
+        🎯 I WANT TO LEARN
+    </small>
+
+    <div
+        class="skill-tags"
+        id="learnSkills"
+    >
+
+    </div>
+
+</div>
+
+
+                <div class="skill-section">
+
+    <small>
+        🧑‍🏫 I CAN TEACH
+    </small>
+
+    <div
+        class="skill-tags teach"
+        id="teachSkills"
+    >
+
+    </div>
+
+</div>
+
+
+                <button class="add-skill" onclick="openSkillModal()">
+    + Add another skill
+</button>
+            </div>
+
+
+            <!-- CONNECTION REQUESTS -->
+
+            <div
+    class="dashboard-panel requests-panel"
+    id="requestsSection"
+>
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-label">
+                            ACTIVITY
+                        </span>
+
+                        <h2>
+                            Requests
+                        </h2>
+
+                    </div>
+
+                    <span class="request-count">
+                        3 New
+                    </span>
+
+                </div>
+
+
+                <div class="request-item">
+
+                    <div class="small-avatar blue">
+                        N
+                    </div>
+
+                    <div class="request-info">
+
+                        <strong>
+                            Neha Patel
+                        </strong>
+
+                        <small>
+                            Wants to learn Python
+                        </small>
+
+                    </div>
+
+                    <button class="accept-btn">
+                        ✓
+                    </button>
+
+                    <button class="reject-btn">
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="request-item">
+
+                    <div class="small-avatar pink">
+                        S
+                    </div>
+
+                    <div class="request-info">
+
+                        <strong>
+                            Sneha Rao
+                        </strong>
+
+                        <small>
+                            Wants to learn SQL
+                        </small>
+
+                    </div>
+
+                    <button class="accept-btn">
+                        ✓
+                    </button>
+
+                    <button class="reject-btn">
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="request-item">
+
+                    <div class="small-avatar orange">
+                        V
+                    </div>
+
+                    <div class="request-info">
+
+                        <strong>
+                            Vikram Singh
+                        </strong>
+
+                        <small>
+                            Wants to learn Java
+                        </small>
+
+                    </div>
+
+                    <button class="accept-btn">
+                        ✓
+                    </button>
+
+                    <button class="reject-btn">
+                        ×
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+    <!-- ================= CONNECTIONS ================= -->
+
+<section
+    class="dashboard-panel connections-section"
+    id="connectionsSection"
+>
+
+    <div class="panel-header">
+
+        <div>
+
+            <span class="panel-label">
+                MY NETWORK
+            </span>
+
+            <h2>
+                My Connections
+            </h2>
+
+        </div>
+
+        <span class="request-count">
+            🤝 Connected
+        </span>
+
+    </div>
+
+
+    <div
+    class="connections-list"
+    id="connectionsList"
+>
+</div>
+
+</section>
+
+
+    <!-- ================= AI MATCH BANNER ================= -->
+
+    <section class="ai-match-banner">
+
+        <div class="ai-icon">
+            ✦
+        </div>
+
+        <div>
+
+            <span>
+                SKILLSWAP SMART MATCH
+            </span>
+
+            <h2>
+                We found 12 students who match your learning goals.
+            </h2>
+
+            <p>
+                Our matching system compares what you want to learn
+                with what other students can teach.
+            </p>
+
+        </div>
+
+        <button>
+            Explore Matches →
+        </button>
+
+    </section>
+    </div>
+
+</main>
+
+<!-- ================= ADD SKILL MODAL ================= -->
+
+<div class="skill-modal-overlay" id="skillModal">
+
+    <div class="skill-modal">
+
+        <button
+            class="skill-modal-close"
+            onclick="closeSkillModal()"
+        >
+            ×
+        </button>
+
+        <div class="skill-modal-icon">
+            ✦
+        </div>
+
+        <h2>
+            Add a Skill
+        </h2>
+
+        <p>
+            Tell SkillSwap what you want to learn or teach.
+        </p>
+
+
+        <label>
+            Skill Name
+        </label>
+
+        <input
+            type="text"
+            id="newSkill"
+            placeholder="Example: Java"
+        >
+
+
+        <label>
+            Skill Type
+        </label>
+
+        <select id="skillType">
+
+            <option value="learn">
+                I want to learn
+            </option>
+
+            <option value="teach">
+                I can teach
+            </option>
+
+        </select>
+
+
+        <button
+            class="save-skill-button"
+            onclick="saveSkill()"
+        >
+            Add Skill
+        </button>
+
+    </div>
+
+</div>
+<!-- PROFILE MODAL -->
+
+<div class="profile-modal-overlay" id="profileModal">
+
+    <div class="profile-modal">
+
+        <button
+            class="profile-modal-close"
+            onclick="closeProfileModal()"
+        >
+            ×
+        </button>
+
+        <div class="profile-avatar">
+            👤
+        </div>
+
+        <h2>My Profile</h2>
+
+        <p>
+            Manage your SkillSwap profile.
+        </p>
+
+        <label>
+            Your Name
+        </label>
+
+        <input
+            type="text"
+            id="profileName"
+            placeholder="Enter your name"
+        >
+
+        <label>
+            Email
+        </label>
+
+        <input
+            type="email"
+            id="profileEmail"
+            disabled
+        >
+
+        <button
+            class="save-profile-button"
+            onclick="saveProfile()"
+        >
+            Save Changes
+        </button>
+
+    </div>
+
+</div>
+<script>
+/* =========================================================
+   SKILLSWAP DASHBOARD — BACKEND INTEGRATION
+   Java + Spring Boot + MySQL
+   ========================================================= */
+
+const API_BASE = "http://localhost:8080/api";
+
+let currentStudent = null;
+let currentSkills = [];
+let currentMatches = [];
+let currentRequests = [];
+let currentConnections = [];
+let sentRequests = [];
+
+
+/* =========================================================
+   BASIC HELPERS
+   ========================================================= */
+
+function getLoggedInStudent() {
+    const saved = localStorage.getItem("skillswapStudent");
+
+    if (!saved) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(saved);
+    } catch (error) {
+        console.error("Invalid student data:", error);
+        return null;
+    }
+}
+
+
+async function api(endpoint, options = {}) {
+    const response = await fetch(API_BASE + endpoint, {
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...(options.headers || {})
+        }
+    });
+
+    const text = await response.text();
+
+    let data = text;
+
+    try {
+        data = text ? JSON.parse(text) : null;
+    } catch {
+        // Response is plain text
+    }
+
+    if (!response.ok) {
+        throw new Error(
+            typeof data === "string"
+                ? data
+                : data?.message || "Request failed"
+        );
+    }
+
+    return data;
+}
+
+
+function escapeHtml(value) {
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function showToast(message) {
+    let toast = document.getElementById("toast");
+
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "toast";
+        toast.style.position = "fixed";
+        toast.style.bottom = "30px";
+        toast.style.right = "30px";
+        toast.style.zIndex = "99999";
+        toast.style.padding = "14px 20px";
+        toast.style.borderRadius = "12px";
+        toast.style.background = "#111827";
+        toast.style.color = "white";
+        toast.style.boxShadow = "0 10px 30px rgba(0,0,0,.2)";
+        document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.style.display = "block";
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(() => {
+        toast.style.display = "none";
+    }, 2500);
+}
+
+
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    currentStudent = getLoggedInStudent();
+
+    if (!currentStudent || !currentStudent.id) {
+        console.warn("No logged-in student found.");
+        return;
+    }
+
+    console.log("Logged-in student:", currentStudent);
+
+    updateStudentHeader();
+
+    /*
+     * Fix the notification button if the old HTML
+     * contained malformed button markup.
+     */
+    const notificationButton =
+        document.querySelector(".icon-button");
+
+    if (notificationButton) {
+        notificationButton.innerHTML =
+            '🔔 <span class="notification-dot"></span>';
+
+        notificationButton.onclick = showNotifications;
+    }
+
+    await loadDashboard();
+});
+
+
+async function loadDashboard() {
+
+    try {
+
+        await Promise.all([
+            loadStudentProfile(),
+            loadSkills(),
+            loadMatches(),
+            loadRequests(),
+            loadConnections(),
+            loadSentRequests()
+        ]);
+
+        await updateDashboardStats();
+        await updateNotificationCount();
+
+        console.log("SkillSwap dashboard loaded successfully.");
+
+    } catch (error) {
+
+        console.error("Dashboard loading error:", error);
+
+        showToast(
+            "Some dashboard data could not be loaded ❌"
+        );
+    }
+}
+
+
+/* =========================================================
+   STUDENT / PROFILE
+   ========================================================= */
+
+function updateStudentHeader() {
+
+    if (!currentStudent) {
+        return;
+    }
+
+    const nameElement =
+        document.getElementById("dashboardUserName");
+
+    if (nameElement) {
+        nameElement.textContent =
+            currentStudent.name || "Student";
+    }
+
+    const avatar =
+        document.getElementById("profileAvatar");
+
+    if (avatar) {
+        avatar.textContent =
+            (currentStudent.name || "S")
+                .charAt(0)
+                .toUpperCase();
+    }
+}
+
+
+async function loadStudentProfile() {
+
+    try {
+
+        const student =
+            await api(`/students/${currentStudent.id}`);
+
+        currentStudent = student;
+
+        localStorage.setItem(
+            "skillswapStudent",
+            JSON.stringify({
+                id: student.id,
+                name: student.name,
+                email: student.email
+            })
+        );
+
+        updateStudentHeader();
+
+    } catch (error) {
+
+        console.error(
+            "Could not load student profile:",
+            error
+        );
+    }
+}
+
+
+/* =========================================================
+   PROFILE MODAL
+   ========================================================= */
+
+function openProfile() {
+
+    const modal =
+        document.getElementById("profileModal");
+
+    if (!modal) {
+        return;
+    }
+
+    const inputs = modal.querySelectorAll("input");
+
+    if (inputs.length >= 1) {
+        inputs[0].value =
+            currentStudent?.name || "";
+    }
+
+    if (inputs.length >= 2) {
+        inputs[1].value =
+            currentStudent?.email || "";
+    }
+
+    modal.style.display = "flex";
+}
+
+
+function closeProfile() {
+
+    const modal =
+        document.getElementById("profileModal");
+
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+
+async function saveProfile() {
+
+    if (!currentStudent) {
+        return;
+    }
+
+    const modal =
+        document.getElementById("profileModal");
+
+    if (!modal) {
+        return;
+    }
+
+    const inputs = modal.querySelectorAll("input");
+
+    const name =
+        inputs[0]?.value.trim();
+
+    const email =
+        inputs[1]?.value.trim();
+
+    if (!name || !email) {
+        showToast(
+            "Please enter name and email ⚠️"
+        );
+        return;
+    }
+
+    try {
+
+        const updated =
+            await api(`/students/${currentStudent.id}`, {
+                method: "PUT",
+                body: JSON.stringify({
+                    name: name,
+                    email: email
+                })
+            });
+
+        currentStudent = updated;
+
+        localStorage.setItem(
+            "skillswapStudent",
+            JSON.stringify({
+                id: updated.id,
+                name: updated.name,
+                email: updated.email
+            })
+        );
+
+        updateStudentHeader();
+
+        closeProfile();
+
+        showToast(
+            "Profile updated successfully ✅"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            error.message ||
+            "Profile update failed ❌"
+        );
+    }
+}
+
+
+/* =========================================================
+   SKILLS
+   ========================================================= */
+
+async function loadSkills() {
+
+    if (!currentStudent) {
+        return;
+    }
+
+    try {
+
+        currentSkills =
+            await api(
+                `/skills/${currentStudent.id}`
+            );
+
+        renderSkills();
+
+    } catch (error) {
+
+        console.error(
+            "Skills loading error:",
+            error
+        );
+
+        currentSkills = [];
+
+        renderSkills();
+    }
+}
+
+
+function renderSkills() {
+
+    const learnContainer =
+        document.getElementById("learnSkills");
+
+    const teachContainer =
+        document.getElementById("teachSkills");
+
+    if (!learnContainer || !teachContainer) {
+        return;
+    }
+
+    const learning =
+        currentSkills.filter(
+            skill =>
+                String(skill.type).toLowerCase() ===
+                "learn"
+        );
+
+    const teaching =
+        currentSkills.filter(
+            skill =>
+                String(skill.type).toLowerCase() ===
+                "teach"
+        );
+
+    learnContainer.innerHTML =
+        learning.length
+            ? learning.map(createSkillHTML).join("")
+            : `<div class="empty-state">
+                    No learning skills added yet.
+               </div>`;
+
+    teachContainer.innerHTML =
+        teaching.length
+            ? teaching.map(createSkillHTML).join("")
+            : `<div class="empty-state">
+                    No teaching skills added yet.
+               </div>`;
+}
+
+
+function createSkillHTML(skill) {
+
+    return `
+        <div class="editable-skill"
+             data-skill-id="${skill.id}">
+
+            <span>${escapeHtml(skill.name)}</span>
+
+            <div>
+                <button
+                    onclick="editSkill(${skill.id})"
+                    title="Edit">
+                    ✏️
+                </button>
+
+                <button
+                    onclick="deleteSkill(${skill.id})"
+                    title="Delete">
+                    🗑️
+                </button>
+            </div>
+
+        </div>
+    `;
+}
+
+
+function openAddSkill() {
+
+    const modal =
+        document.getElementById("skillModal");
+
+    if (modal) {
+        modal.style.display = "flex";
+    }
+}
+
+
+function closeSkillModal() {
+
+    const modal =
+        document.getElementById("skillModal");
+
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+
+async function saveSkill() {
+
+    if (!currentStudent) {
+        return;
+    }
+
+    const modal =
+        document.getElementById("skillModal");
+
+    if (!modal) {
+        return;
+    }
+
+    const inputs =
+        modal.querySelectorAll("input");
+
+    const selects =
+        modal.querySelectorAll("select");
+
+    const name =
+        inputs[0]?.value.trim();
+
+    let type =
+        selects[0]?.value;
+
+    /*
+     * If the modal uses radio buttons instead
+     * of a select box.
+     */
+    if (!type) {
+
+        const checked =
+            modal.querySelector(
+                'input[name="skillType"]:checked'
+            );
+
+        if (checked) {
+            type = checked.value;
+        }
+    }
+
+    if (!name) {
+        showToast(
+            "Please enter a skill name ⚠️"
+        );
+        return;
+    }
+
+    if (!type) {
+        showToast(
+            "Please select skill type ⚠️"
+        );
+        return;
+    }
+
+    try {
+
+        await api("/skills", {
+            method: "POST",
+            body: JSON.stringify({
+                studentId: currentStudent.id,
+                name: name,
+                type: type.toLowerCase()
+            })
+        });
+
+        await loadSkills();
+
+        closeSkillModal();
+
+        showToast(
+            "Skill added successfully ✅"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            error.message ||
+            "Could not add skill ❌"
+        );
+    }
+}
+
+
+async function deleteSkill(skillId) {
+
+    const confirmed =
+        confirm("Delete this skill?");
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        await api(`/skills/${skillId}`, {
+            method: "DELETE"
+        });
+
+        await loadSkills();
+
+        showToast(
+            "Skill deleted successfully ✅"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            error.message ||
+            "Could not delete skill ❌"
+        );
+    }
+}
+
+
+async function editSkill(skillId) {
+
+    const skill =
+        currentSkills.find(
+            item => Number(item.id) === Number(skillId)
+        );
+
+    if (!skill) {
+        return;
+    }
+
+    const newName =
+        prompt(
+            "Enter new skill name:",
+            skill.name
+        );
+
+    if (!newName || !newName.trim()) {
+        return;
+    }
+
+    try {
+
+        /*
+         * Backend currently has DELETE + POST
+         * rather than a skill PUT endpoint.
+         */
+
+        await api(`/skills/${skillId}`, {
+            method: "DELETE"
+        });
+
+        await api("/skills", {
+            method: "POST",
+            body: JSON.stringify({
+                studentId: currentStudent.id,
+                name: newName.trim(),
+                type: skill.type
+            })
+        });
+
+        await loadSkills();
+
+        showToast(
+            "Skill updated successfully ✅"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            error.message ||
+            "Could not update skill ❌"
+        );
+    }
+}
+
+
+/* =========================================================
+   MATCHES
+   ========================================================= */
+
+async function loadMatches() {
+
+    if (!currentStudent) {
+        return;
+    }
+
+    try {
+
+        currentMatches =
+            await api(
+                `/matches/${currentStudent.id}`
+            );
+
+        renderMatches();
+
+    } catch (error) {
+
+        console.error(
+            "Matches loading error:",
+            error
+        );
+
+        currentMatches = [];
+
+        renderMatches();
+    }
+}
+
+
+function renderMatches() {
+
+    const panel =
+        document.querySelector(".matches-panel");
+
+    if (!panel) {
+        return;
+    }
+
+    let list =
+        panel.querySelector(".matches-list");
+
+    if (!list) {
+
+        list =
+            document.createElement("div");
+
+        list.className =
+            "matches-list";
+
+        panel.appendChild(list);
+    }
+
+    if (!currentMatches.length) {
+
+        list.innerHTML = `
+            <div class="empty-state">
+                No skill matches found yet.
+                Add your learning and teaching
+                skills to discover matches.
+            </div>
+        `;
+
+        return;
+    }
+
+    list.innerHTML =
+        currentMatches.map(match => {
+
+            const percentage =
+                Number(match.matchPercentage || 0);
+
+            const skills =
+                match.matchingSkills || [];
+
+            return `
+                <div class="match-card"
+                     data-name="${escapeHtml(match.name)}">
+
+                    <div class="match-avatar">
+                        ${escapeHtml(
+                            (match.name || "S")
+                                .charAt(0)
+                                .toUpperCase()
+                        )}
+                    </div>
+
+                    <div class="match-info">
+
+                        <h3>
+                            ${escapeHtml(
+                                match.name || "Student"
+                            )}
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(
+                                match.email || ""
+                            )}
+                        </p>
+
+                        <div class="match-skills">
+
+                            ${
+                                skills.length
+                                ? skills.map(skill =>
+                                    `<span>
+                                        ${escapeHtml(skill)}
+                                     </span>`
+                                  ).join("")
+                                : `<span>
+                                      No common skill
+                                   </span>`
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <div class="match-score">
+                        <strong>
+                            ${percentage}%
+                        </strong>
+
+                        <small>Match</small>
+
+                        <button
+                            onclick="connectDashboard(${match.id})">
+                            Connect
+                        </button>
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+function dashboardSearch() {
+
+    const input =
+        document.getElementById("dashboardSearch");
+
+    if (!input) {
+        return;
+    }
+
+    const search =
+        input.value.toLowerCase().trim();
+
+    const cards =
+        document.querySelectorAll(
+            ".match-card"
+        );
+
+    cards.forEach(card => {
+
+        const text =
+            card.innerText.toLowerCase();
+
+        card.style.display =
+            text.includes(search)
+                ? ""
+                : "none";
+    });
+}
+
+
+async function connectDashboard(studentId) {
+
+    if (!currentStudent) {
+        return;
+    }
+
+    if (
+        Number(studentId) ===
+        Number(currentStudent.id)
+    ) {
+        showToast(
+            "You cannot connect with yourself ⚠️"
+        );
+        return;
+    }
+
+    const existing =
+        sentRequests.find(
+            request =>
+                Number(request.receiverId) ===
+                Number(studentId) &&
+                String(request.status).toUpperCase() ===
+                "PENDING"
+        );
+
+    if (existing) {
+
+        showToast(
+            "Connection request already sent ⏳"
+        );
+
+        return;
+    }
+
+    try {
+
+        await api("/requests", {
+            method: "POST",
+            body: JSON.stringify({
+                requesterId: currentStudent.id,
+                receiverId: studentId
+            })
+        });
+
+        await loadSentRequests();
+
+        showToast(
+            "Connection request sent ✅"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            error.message ||
+            "Could not send request ❌"
+        );
+    }
+}
+
+
+/* =========================================================
+   CONNECTION REQUESTS
+   ========================================================= */
+
+async function loadRequests() {
+
+    if (!currentStudent) {
+        return;
+    }
+
+    try {
+
+        currentRequests =
+            await api(
+                `/requests/received/${currentStudent.id}`
+            );
+
+        renderRequests();
+
+    } catch (error) {
+
+        console.error(
+            "Requests loading error:",
+            error
+        );
+
+        currentRequests = [];
+
+        renderRequests();
+    }
+}
+
+
+async function loadSentRequests() {
+
+    if (!currentStudent) {
+        return;
+    }
+
+    try {
+
+        sentRequests =
+            await api(
+                `/requests/sent/${currentStudent.id}`
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Sent requests error:",
+            error
+        );
+
+        sentRequests = [];
+    }
+}
+
+
+function renderRequests() {
+
+    const container =
+        document.getElementById("requestsList");
+
+    if (!container) {
+        return;
+    }
+
+    const pending =
+        currentRequests.filter(
+            request =>
+                String(request.status)
+                    .toUpperCase() ===
+                "PENDING"
+        );
+
+    if (!pending.length) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                No pending connection requests.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML =
+        pending.map(request => {
+
+            const requesterName =
+                request.requesterName ||
+                request.name ||
+                `Student #${request.requesterId}`;
+
+            return `
+                <div class="request-item">
+
+                    <div class="request-avatar">
+                        ${escapeHtml(
+                            requesterName
+                                .charAt(0)
+                                .toUpperCase()
+                        )}
+                    </div>
+
+                    <div class="request-info">
+
+                        <strong>
+                            ${escapeHtml(requesterName)}
+                        </strong>
+
+                        <span>
+                            wants to connect with you
+                        </span>
+
+                    </div>
+
+                    <div class="request-actions">
+
+                        <button
+                            onclick="acceptRequest(${request.id})">
+                            Accept
+                        </button>
+
+                        <button
+                            onclick="rejectRequest(${request.id})">
+                            Reject
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+async function acceptRequest(requestId) {
+
+    try {
+
+        await api(
+            `/requests/${requestId}/accept`,
+            {
+                method: "PUT"
+            }
+        );
+
+        await loadRequests();
+        await loadConnections();
+        await updateDashboardStats();
+        await updateNotificationCount();
+
+        showToast(
+            "Connection request accepted ✅"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            error.message ||
+            "Could not accept request ❌"
+        );
+    }
+}
+
+
+async function rejectRequest(requestId) {
+
+    try {
+
+        await api(
+            `/requests/${requestId}/reject`,
+            {
+                method: "PUT"
+            }
+        );
+
+        await loadRequests();
+        await updateNotificationCount();
+
+        showToast(
+            "Connection request rejected"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            error.message ||
+            "Could not reject request ❌"
+        );
+    }
+}
+
+
+/* =========================================================
+   CONNECTIONS
+   ========================================================= */
+
+async function loadConnections() {
+
+    if (!currentStudent) {
+        return;
+    }
+
+    try {
+
+        currentConnections =
+            await api(
+                `/connections/${currentStudent.id}`
+            );
+
+        renderConnections();
+
+    } catch (error) {
+
+        console.error(
+            "Connections loading error:",
+            error
+        );
+
+        currentConnections = [];
+
+        renderConnections();
+    }
+}
+
+
+function renderConnections() {
+
+    const container =
+        document.getElementById("connectionsList");
+
+    if (!container) {
+        return;
+    }
+
+    if (!currentConnections.length) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                No connections yet.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML =
+        currentConnections.map(connection => {
+
+            const id =
+                connection.studentId ??
+                connection.otherStudentId ??
+                connection.id;
+
+            const name =
+                connection.name ??
+                connection.studentName ??
+                "Student";
+
+            const email =
+                connection.email ?? "";
+
+            return `
+                <div class="connection-card">
+
+                    <div class="connection-avatar">
+                        ${escapeHtml(
+                            name.charAt(0).toUpperCase()
+                        )}
+                    </div>
+
+                    <div class="connection-info">
+
+                        <strong>
+                            ${escapeHtml(name)}
+                        </strong>
+
+                        <span>
+                            ${escapeHtml(email)}
+                        </span>
+
+                    </div>
+
+                    <div class="connection-status">
+                        Connected ✓
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+/* =========================================================
+   DASHBOARD STATISTICS
+   ========================================================= */
+
+async function updateDashboardStats() {
+
+    if (!currentStudent) {
+        return;
+    }
+
+    try {
+
+        const data =
+            await api(
+                `/dashboard/${currentStudent.id}`
+            );
+
+        const matchCount =
+            document.getElementById(
+                "skillMatchCount"
+            );
+
+        const learningCount =
+            document.getElementById(
+                "learningSkillCount"
+            );
+
+        const teachingCount =
+            document.getElementById(
+                "teachingSkillCount"
+            );
+
+        const connectionCount =
+            document.getElementById(
+                "connectionCount"
+            );
+
+        if (matchCount) {
+            matchCount.textContent =
+                currentMatches.length;
+        }
+
+        if (learningCount) {
+
+            learningCount.textContent =
+                Array.isArray(data.learningSkills)
+                    ? data.learningSkills.length
+                    : currentSkills.filter(
+                        skill =>
+                            String(skill.type)
+                                .toLowerCase() ===
+                            "learn"
+                    ).length;
+        }
+
+        if (teachingCount) {
+
+            teachingCount.textContent =
+                Array.isArray(data.teachingSkills)
+                    ? data.teachingSkills.length
+                    : currentSkills.filter(
+                        skill =>
+                            String(skill.type)
+                                .toLowerCase() ===
+                            "teach"
+                    ).length;
+        }
+
+        if (connectionCount) {
+
+            connectionCount.textContent =
+                data.connectionCount ??
+                currentConnections.length;
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Dashboard statistics error:",
+            error
+        );
+    }
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+   ========================================================= */
+
+async function updateNotificationCount() {
+
+    if (!currentStudent) {
+        return;
+    }
+
+    try {
+
+        const requests =
+            await api(
+                `/requests/received/${currentStudent.id}`
+            );
+
+        const pending =
+            requests.filter(
+                request =>
+                    String(request.status)
+                        .toUpperCase() ===
+                    "PENDING"
+            );
+
+        const count =
+            pending.length;
+
+        const notificationCount =
+            document.getElementById(
+                "notificationCount"
+            );
+
+        if (notificationCount) {
+            notificationCount.textContent =
+                count;
+        }
+
+        const dot =
+            document.querySelector(
+                ".notification-dot"
+            );
+
+        if (dot) {
+            dot.style.display =
+                count > 0
+                    ? "block"
+                    : "none";
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Notification count error:",
+            error
+        );
+    }
+}
+
+
+function showNotifications() {
+
+    if (!currentStudent) {
+        return;
+    }
+
+    if (!currentRequests.length) {
+
+        showToast(
+            "No new notifications"
+        );
+
+        return;
+    }
+
+    const pending =
+        currentRequests.filter(
+            request =>
+                String(request.status)
+                    .toUpperCase() ===
+                "PENDING"
+        );
+
+    if (!pending.length) {
+
+        showToast(
+            "No new notifications"
+        );
+
+        return;
+    }
+
+    showToast(
+        `You have ${pending.length} pending request${
+            pending.length === 1 ? "" : "s"
+        } 🔔`
+    );
+
+    /*
+     * Automatically show the requests section.
+     */
+    const section =
+        document.getElementById(
+            "requestsSection"
+        );
+
+    if (section) {
+
+        section.scrollIntoView({
+            behavior: "smooth"
+        });
+    }
+}
+
+
+/* =========================================================
+   SECTION NAVIGATION
+   ========================================================= */
+
+function showSection(sectionId) {
+
+    const section =
+        document.getElementById(sectionId);
+
+    if (section) {
+
+        section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+function logout() {
+
+    localStorage.removeItem(
+        "skillswapLoggedIn"
+    );
+
+    localStorage.removeItem(
+        "skillswapStudent"
+    );
+
+    showToast(
+        "Logged out successfully 👋"
+    );
+
+    setTimeout(() => {
+
+        window.location.href =
+            "index.html";
+
+    }, 700);
+}
+
+
+/* =========================================================
+   CLOSE MODALS WHEN CLICKING OUTSIDE
+   ========================================================= */
+
+window.addEventListener(
+    "click",
+    function(event) {
+
+        const skillModal =
+            document.getElementById(
+                "skillModal"
+            );
+
+        const profileModal =
+            document.getElementById(
+                "profileModal"
+            );
+
+        if (
+            skillModal &&
+            event.target === skillModal
+        ) {
+            skillModal.style.display =
+                "none";
+        }
+
+        if (
+            profileModal &&
+            event.target === profileModal
+        ) {
+            profileModal.style.display =
+                "none";
+        }
+    }
+);
+
+
+/* =========================================================
+   DEBUG INFORMATION
+   ========================================================= */
+
+console.log(
+    "SkillSwap backend integration loaded."
+);
+</script>
+
+</body>
+</html>
